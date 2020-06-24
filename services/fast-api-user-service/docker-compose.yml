@@ -10,6 +10,12 @@ services:
       - 8081:8080
     networks:
       - eventbus-network
+    environment:
+      PG_USERNAME: ${PG_USERNAME}
+      PG_PASSWORD: ${PG_PASSWORD}
+      PG_HOST: ${PG_HOST}
+      PG_PORT: ${PG_PORT}
+      PG_DB_NAME: ${PG_DB_NAME}
 networks:
   eventbus-network:
     external: true

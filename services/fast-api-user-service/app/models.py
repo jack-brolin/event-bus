@@ -1,3 +1,5 @@
+import os
+
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import Column, Integer, String
 
@@ -5,7 +7,14 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
 # an Engine, which the Session will use for connection resources
-engine = create_engine('postgresql://EventBus:EventBus.123.@postgres:5432/eb_database')
+url = 'postgresql://{username}:{password}@{host}:{port}/{db_name}}'.format(
+    username=os.getenv("PG_USERNAME"),
+    password=os.getenv("PG_PASSWORD"),
+    host=os.getenv("PG_HOST"),
+    port=os.getenv("PG_PORT"),
+    db_name=os.getenv("PG_DB_NAME")
+)
+engine = create_engine()
 
 # create a configured "Session" class
 Session = sessionmaker(bind=engine)
