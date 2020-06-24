@@ -1,0 +1,24 @@
+version: '3.7'
+services:
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: rabbitmq
+#    volumes:
+#        - rabbitmq-data/.docker/rabbitmq/etc/:/etc/rabbitmq/
+#        - rabbitmq-data/.docker/rabbitmq/data/:/var/lib/rabbitmq/
+#        - rabbitmq-data/.docker/rabbitmq/logs/:/var/log/rabbitmq/
+    environment:
+        RABBITMQ_ERLANG_COOKIE: ${RABBITMQ_ERLANG_COOKIE}
+        RABBITMQ_DEFAULT_USER: ${RABBITMQ_DEFAULT_USER}
+        RABBITMQ_DEFAULT_PASS: ${RABBITMQ_DEFAULT_PASS}
+    networks:
+      - eventbus-network
+    ports:
+        - 5672:5672
+        - 15672:15672
+volumes:
+  rabbitmq-data:
+    driver: local
+networks:
+  eventbus-network:
+    external: true

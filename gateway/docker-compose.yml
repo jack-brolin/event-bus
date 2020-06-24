@@ -1,0 +1,18 @@
+version: '3.5'
+services:
+  proxy_nginx:
+    container_name: proxy_nginx
+    restart: always
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    ports:
+      - "${PROXY_PORT_HTTP}:80"
+      - "${PROXY_PORT_HTTPS}:443"
+    volumes:
+      - ./logs:/logs
+    networks:
+      - eventbus-network
+networks:
+  eventbus-network:
+    external: true
