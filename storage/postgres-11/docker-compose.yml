@@ -1,0 +1,22 @@
+version: '3.7'
+services:
+  postgres:
+    restart: always
+    image: postgres:11
+    command: postgres -c 'shared_buffers=1024MB' -c 'max_connections=4000'
+    environment:
+      POSTGRES_USER: ${EVENTBUS_DB_USER}
+      POSTGRES_PASSWORD: ${EVENTBUS_DB_PASSWORD}
+      POSTGRES_DB: ${EVENTBUS_DB_DATABASE}
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    networks:
+      - eventbus-network
+    ports:
+      - 5432:5432
+volumes:
+  postgres-data:
+    driver: local
+networks:
+  eventbus-network:
+    external: true
