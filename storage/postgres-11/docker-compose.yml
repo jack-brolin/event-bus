@@ -3,12 +3,15 @@ services:
   postgres:
     restart: always
     image: postgres:11
+    container_name: postgres-db
     command: postgres -c 'shared_buffers=1024MB' -c 'max_connections=4000'
     environment:
       POSTGRES_USER: ${EVENTBUS_DB_USER}
       POSTGRES_PASSWORD: ${EVENTBUS_DB_PASSWORD}
-      POSTGRES_DB: ${EVENTBUS_DB_DATABASE}
+      EVENTBUS_DB_USERSERVICE: ${EVENTBUS_DB_USERSERVICE}
+      EVENTBUS_DB_ML_MODEL: ${EVENTBUS_DB_ML_MODEL}
     volumes:
+      - ./create_db.sh:/docker-entrypoint-initdb.d/create_db.sh
       - postgres-data:/var/lib/postgresql/data
     networks:
       - eventbus-network
