@@ -20,14 +20,11 @@ session = Session()
 Base = declarative_base()
 
 
-class User(Base):
-    __tablename__ = "users"
+class UserPermission(Base):
+    __tablename__ = "user_permission"
 
     id = Column(Integer, primary_key=True, index=True, autoincrement=True)
     username = Column(String(300))
-    password = Column(String(300))
-    first_name = Column(String(300))
-    last_name = Column(String(300))
     permission = Column(String(300))
 
     def __init__(self, username, password, first_name, last_name, permission):
