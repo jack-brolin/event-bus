@@ -1,5 +1,8 @@
+import os
+
 import inspect
 import bcrypt
+import pika
 
 from fastapi import APIRouter, Depends, Request, status
 from fastapi.responses import JSONResponse
@@ -40,5 +43,15 @@ def health_check(request: Request, new_user: UserInput):
     user.permission = new_user.permission
 
     user.save_to_db()
+
+    connection = pika.BlockingConnection(pika.ConnectionParameters(
+        'rabbitmq',
+        5672,
+        '/',
+        pika.PlainCredentials(os.getenv("RABBITMQ_DEFAULT_USER"), os.getenv("RABBITMQ_DEFAULT_PASS")))
+    )
+    channel = connection.channel()
+    channel.basic_publish(exchange='my_exchange', routing_key='test', body='{"action": "user updated"}')
+    connection.close()
 
     return {"message", "Updated successfully!"}

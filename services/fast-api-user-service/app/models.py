@@ -6,7 +6,7 @@ from sqlalchemy import Column, Integer, String
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
-url = 'postgresql://{username}:{password}@{host}:{port}/{db_name}}'.format(
+url = 'postgresql://{username}:{password}@{host}:{port}/{db_name}'.format(
     username=os.getenv("PG_USERNAME"),
     password=os.getenv("PG_PASSWORD"),
     host=os.getenv("PG_HOST"),
