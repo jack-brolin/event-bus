@@ -45,7 +45,7 @@ def health_check(request: Request, new_user: UserInput):
     user.save_to_db()
 
     connection = pika.BlockingConnection(pika.ConnectionParameters(
-        'rabbitmq',
+        os.getenv("RABBITMQ_DEFAULT_HOST"),
         5672,
         '/',
         pika.PlainCredentials(os.getenv("RABBITMQ_DEFAULT_USER"), os.getenv("RABBITMQ_DEFAULT_PASS")))

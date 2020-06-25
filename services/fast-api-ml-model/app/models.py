@@ -6,7 +6,7 @@ from sqlalchemy import Column, Integer, String
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
-url = 'postgresql://{username}:{password}@{host}:{port}/{db_name}}'.format(
+url = 'postgresql://{username}:{password}@{host}:{port}/{db_name}'.format(
     username=os.getenv("PG_USERNAME"),
     password=os.getenv("PG_PASSWORD"),
     host=os.getenv("PG_HOST"),
@@ -23,15 +23,11 @@ Base = declarative_base()
 class UserPermission(Base):
     __tablename__ = "user_permission"
 
-    id = Column(Integer, primary_key=True, index=True, autoincrement=True)
-    username = Column(String(300))
+    username = Column(String(300), primary_key=True, nullable=False)
     permission = Column(String(300))
 
-    def __init__(self, username, password, first_name, last_name, permission):
+    def __init__(self, username, permission):
         self.username = username
-        self.password = password
-        self.first_name = first_name
-        self.last_name = last_name
         self.permission = permission
 
     @classmethod
