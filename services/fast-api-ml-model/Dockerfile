@@ -7,11 +7,12 @@ RUN apt-get update
 RUN apt-get install libsasl2-dev python-dev libldap2-dev libssl-dev -y
 
 ADD app /app
+ADD resources /resources
 
 ADD requirements.txt /
 ADD main.py /
 
-ADD user_service.sh /
+ADD model_service.sh /
 
 WORKDIR /
 

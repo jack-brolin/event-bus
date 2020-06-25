@@ -16,3 +16,4 @@ idna==2.8
 bcrypt
 sqlalchemy
 psycopg2==2.8.2
+pika

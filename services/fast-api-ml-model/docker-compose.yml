@@ -1,6 +1,6 @@
 version: '3.7'
 services:
-  user-service:
+  model-service:
     build:
       context: ""
     restart: always
@@ -10,6 +10,15 @@ services:
       - 8082:8080
     networks:
       - eventbus-network
+    environment:
+      PG_USERNAME: ${PG_USERNAME}
+      PG_PASSWORD: ${PG_PASSWORD}
+      PG_HOST: ${PG_HOST}
+      PG_PORT: ${PG_PORT}
+      PG_DB_NAME: ${PG_DB_NAME}
+      RABBITMQ_DEFAULT_USER: ${RABBITMQ_DEFAULT_USER}
+      RABBITMQ_DEFAULT_PASS: ${RABBITMQ_DEFAULT_PASS}
+      RABBITMQ_DEFAULT_HOST: ${RABBITMQ_DEFAULT_HOST}
 networks:
   eventbus-network:
     external: true
