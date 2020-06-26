@@ -16,6 +16,9 @@ services:
       PG_HOST: ${PG_HOST}
       PG_PORT: ${PG_PORT}
       PG_DB_NAME: ${PG_DB_NAME}
+      RABBITMQ_DEFAULT_USER: ${RABBITMQ_DEFAULT_USER}
+      RABBITMQ_DEFAULT_PASS: ${RABBITMQ_DEFAULT_PASS}
+      RABBITMQ_DEFAULT_HOST: ${RABBITMQ_DEFAULT_HOST}
 networks:
   eventbus-network:
     external: true
