@@ -14,10 +14,10 @@ api = APIRouter()
 
 
 @api.post("/user")
-def health_check(request: Request, new_user: UserInput):
+def insert_user(request: Request, new_user: UserInput):
     user = User.find_by_username(username=new_user.username)
     if user:
-        return {"message", "Username already exist!"}
+        return JSONResponse(content={"message": "Username already exist!"}, status_code=400)
 
     user = User(
         username=new_user.username,
@@ -26,22 +26,20 @@ def health_check(request: Request, new_user: UserInput):
         last_name=new_user.last_name,
         permission=new_user.permission
     )
-
     user.save_to_db()
 
-    return {"message", "Saved successfully!"}
+    return JSONResponse(content={"message": "Saved successfully!"}, status_code=200)
 
 
 @api.put("/user")
-def health_check(request: Request, new_user: UserInput):
+def update_user(request: Request, new_user: UserInput):
     user = User.find_by_username(username=new_user.username)
     if not user:
-        return {"message", "Username doesn't exist!"}
+        return JSONResponse(content={"message": "Username doesn't exist!"}, status_code=200)
 
     user.first_name = new_user.first_name
     user.last_name = new_user.last_name
     user.permission = new_user.permission
-
     user.save_to_db()
 
     connection = pika.BlockingConnection(pika.ConnectionParameters(
@@ -51,7 +49,11 @@ def health_check(request: Request, new_user: UserInput):
         pika.PlainCredentials(os.getenv("RABBITMQ_DEFAULT_USER"), os.getenv("RABBITMQ_DEFAULT_PASS")))
     )
     channel = connection.channel()
-    channel.basic_publish(exchange='my_exchange', routing_key='test', body='{"action": "user updated"}')
+    body_string = """{{"action": "user updated", "username": "{username}", "permission": "{permission}"}}""".format(
+        username=user.username,
+        permission=user.permission
+    )
+    channel.basic_publish(exchange='my_exchange', routing_key='test', body=body_string)
     connection.close()
 
-    return {"message", "Updated successfully!"}
+    return JSONResponse(content={"message": "Updated successfully!"}, status_code=200)
